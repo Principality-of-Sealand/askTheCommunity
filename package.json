@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --coverage",
-    "start": "nodemon ./server/index.js",
-    "react-dev": "webpack --w"
+    "start": "npm run build && npm run server",
+    "build": "webpack",
+    "server": "nodemon ./server/index.js"
   },
   "keywords": [],
   "author": "",
@@ -25,6 +26,7 @@
     "enzyme-adapter-react-16": "^1.1.1",
     "enzyme-to-json": "^3.3.4",
     "express": "^4.16.3",
+    "faker": "^4.1.0",
     "grunt": "^1.0.3",
     "grunt-contrib-watch": "^1.1.0",
     "grunt-ssh": "^0.12.9",
