@@ -1,33 +1,70 @@
-const Sequelize = require('sequelize');
-const { connection } = require('./index.js');
-
-const Question = connection.define( 'question', {
-    user_id: Sequelize.INTEGER,
-    restaurant_id: Sequelize.INTEGER,
-    text: Sequelize.STRING,
-    parent_id: Sequelize.INTEGER,
-    helpful: Sequelize.INTEGER
-});
-
-const User = connection.define( 'user', {
-    username: Sequelize.STRING,
-    imageUrl: Sequelize.STRING
-});
-
-
-connection.sync()
-  .then(() => {
-      console.log('Successfully created tables!')
+const {Pool, Client } = require('pg');
+const copyFrom = require('pg-copy-streams').from;
+const fs = require('fs');
+const pool = new Pool({
+  user: 'postgres',
+  host: 'localhost',
+  database: 'practice',
+  password: 'root',
+  port: '5432'
+})
+const client = new Client({
+  user: 'postgres',
+  host: 'localhost',
+  database: 'postgres',
+  password: 'root',
+  port: '5432'
+})
+//  only for recreating the database
+// client.connect((err, client, done) => {
+//   if(err) console.log('unable to connect to postgres db', err)
+//   client.query('CREATE DATABASE practice', (err) => {
+//     if(err){
+//       console.log('error creating db', err)
+//     }
+//     client.end();
+//   })
+// })
+    pool.connect((err, newClient, done) => {
+      if(err) {
+        console.log('unable to connect to created db', err)
+      }
+      newClient.query(`DROP TABLE IF EXISTS "questions"`)
+      newClient.query(`CREATE TABLE IF NOT EXISTS questions (
+          ID SERIAL,
+          USER_ID INTEGER,
+          RESTAURANT_ID INTEGER,
+          TEXT VARCHAR(255),
+          PARENT_ID INTEGER,
+          HELPFUL INTEGER,
+          ANSWER TEXT,
+          "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL,
+          "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL,
+          PRIMARY KEY (ID)
+      );`
+    )
+    let stream = newClient.query(copyFrom(`COPY questions (user_id, restaurant_id, text, parent_id, helpful, "createdAt", "updatedAt") FROM STDIN WITH NULL AS '@';`));
+    let fileStream = fs.createReadStream('./questions.csv')
+    fileStream.on('error', done);
+    stream.on('error', done);
+    stream.on('end', done);
+    fileStream.pipe(stream);
+    newClient.query(`DROP TABLE IF EXISTS users`)
+    newClient.query(`CREATE TABLE users (
+      ID  SERIAL,
+      USERNAME VARCHAR(255),
+      "imageUrl" TEXT,
+      "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL,
+      "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL,
+      PRIMARY KEY (ID)
+    );`
+  )
+  let streamUsers = newClient.query(copyFrom(`COPY users (username, "imageUrl", "createdAt", "updatedAt") FROM STDIN;`));
+  let fileStreamUsers = fs.createReadStream('./users.csv')
+  fileStreamUsers.on('error', done);
+  streamUsers.on('error', done);
+  streamUsers.on('end', done);
+  fileStreamUsers.pipe(streamUsers);
   })
-  .catch(err => {
-      console.log('Error inserting tables...', err);
-  })
 
-
-  module.exports = {
-      User,
-      Question
-  }
-
-
-  
+  module.exports = {pool:pool}
