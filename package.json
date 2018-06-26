@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest --coverage",
     "start": "npm run build && npm run server",
-    "build": "webpack",
+    "build": "webpack -w",
     "server": "nodemon ./server/index.js"
   },
   "keywords": [],
@@ -36,6 +36,7 @@
     "morgan": "^1.9.0",
     "nodemon": "^1.17.5",
     "pg": "^7.4.3",
+    "pg-copy-streams": "^1.2.0",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
     "regenerator-runtime": "^0.11.1",
