@@ -1,0 +1,35 @@
+config:
+  target: 'http://localhost:3000'
+  http:
+    pool: 5
+  phases:
+    - duration: 30
+      arrivalRate: 100
+      # was 6
+scenarios:
+  - flow:
+    - loop:
+      - get:
+          url: "/api/questions/{{ $loopElement }}"
+      over:
+        - 11000000
+        - 9400000
+        - 9600000
+        - 9000000
+        - 9999999
+        - 9545634
+        - 9234234
+        - 9865765
+        - 9123121
+        - 9234232
+        - 9125457
+
+
+    # - loop:
+    #   - get:
+    #       url: "/api/getAnswers/9000000"
+    #   count: 10
+          # /api/questions/9000000
+          # /api/getAnswers/9000000
+      # count: 120
+      # previous count was 220

@@ -1,0 +1,77 @@
+config:
+  target: 'http://localhost:3000'
+  http:
+    # pool: 5
+  phases:
+    - duration: 30
+      arrivalRate: 100
+      # was 6
+scenarios:
+  - flow:
+    # - loop:
+    - put:
+        url: "/api/questions"
+        form:
+          user_id: 11000000
+          restaurant_id: 11000000
+          text: 'test'
+    - put:
+        url: "/api/questions"
+        form:
+          user_id: 9400000
+          restaurant_id: 9400000
+          text: 'test'
+    - put:
+        url: "/api/questions"
+        form:
+          user_id: 9600000
+          restaurant_id: 9600000
+          text: 'test'
+    - put:
+        url: "/api/questions"
+        form:
+          user_id: 9000000
+          restaurant_id: 9000000
+          text: 'test'
+    - put:
+        url: "/api/questions"
+        form:
+          user_id: 9999999
+          restaurant_id: 9999999
+          text: 'test'
+    - put:
+        url: "/api/questions"
+        form:
+          user_id: 9545634
+          restaurant_id: 9545634
+          text: 'test'
+    - put:
+        url: "/api/questions"
+        form:
+          user_id: 9234234
+          restaurant_id: 9234234
+          text: 'test'
+    - put:
+        url: "/api/questions"
+        form:
+          user_id: 9865765
+          restaurant_id: 9865765
+          text: 'test'
+    - put:
+        url: "/api/questions"
+        form:
+          user_id: 9123121
+          restaurant_id: 9123121
+          text: 'test'
+    - put:
+        url: "/api/questions"
+        form:
+          user_id: 9234232
+          restaurant_id: 9234232
+          text: 'test'
+    - put:
+        url: "/api/questions"
+        form:
+          user_id: 9125457
+          restaurant_id: 9125457
+          text: 'test'
