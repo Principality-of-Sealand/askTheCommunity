@@ -69,7 +69,6 @@ class Answers extends Component {
   }
 
   render() {
-    // console.log('State check in Answers...', this.state)
     const Answer = styled.div`
       margin-left: 6px;
       margin-rigth: 6px;
