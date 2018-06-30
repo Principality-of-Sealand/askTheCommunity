@@ -16,12 +16,7 @@ const usersController = {
   })
   }),
   'getPhoto': ((req, res) => {
-    // User.find({
-    //   where: {
-    //     id: req.params.id
-    //   }
-    // })
-    pool.query('SELECT * FROM users where id =$1',[req.params.id])
+    pool.query('SELECT * FROM users where id = $1',[req.params.id])
       .then(data => {
         res.status(200).send(data.rows);
       })
@@ -30,28 +25,23 @@ const usersController = {
       });
   }),
   'put': ((req, res) => {
-    pool.query('UPDATE users set (imageUrl) VALUES ($1) WHERE id = $2', [req.body.imageUrl, req.body.username])
+    pool.query('UPDATE users set (imageUrl) = ($1) WHERE username = $2', [req.body.imageUrl, req.body.username])
       .then(data => {
-        res.status(200).json(data);
+        res.status(200).send(data);
       })
       .catch(err => {
         res.status(400).send(err);
       })
   }),
   'delete': ((req, res)=> {
-    pool.query('DELETE FROM users where username=$1'[req.body.username])
+    pool.query('DELETE FROM users where username = $1',[req.body.username])
+      .then(data => {
+        res.status(200).send(data)
+      })
+      .catch(err => {
+        res.status(400).send(err)
+      })
   })
-  // 'get': ((req, res) => {
-  //   User.update({
-  //     where: {
-  //       id: req.params.id
-  //     }
-  //   })
-  // }),
-  // 'put': ((req, res) => {
-  //   User.update({
-  //   })
-  // })
 }
 
 module.exports = {usersController:usersController}
