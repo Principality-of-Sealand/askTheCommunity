@@ -58,8 +58,8 @@ const questionsController = {
   })
 }),
 'put' : ((req, res) => {
-pool.query('UPDATE questions SET (user_id, restaurant_id, text, parent_id, helpful, "createdAt", "updatedAt") = ($1, $2, $3, $4, $5, $6, $7) WHERE restaurant_id = ($2)',
-[req.body.user_id, req.body.restaurant_id, req.body.text, req.body.parent_id || null, req.body.helpful || null, 'now', 'now'])
+pool.query('UPDATE questions SET (user_id, text, parent_id, helpful, "createdAt", "updatedAt") = ($1, $2, $3, $4, $5, $6, ) WHERE restaurant_id = ($7)',
+[req.body.user_id, req.body.text, req.body.parent_id || null, req.body.helpful || null, 'now', 'now', req.body.restaurant_id])
   .then(data => {
     res.status(201).json(data)
   })
