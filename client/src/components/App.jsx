@@ -4,12 +4,12 @@ import axios from "axios";
 import styled from "styled-components";
 //local imports
 import Question from "./Question.jsx";
-
+const db = 'http://ec2-18-191-253-37.us-east-2.compute.amazonaws.com:3000'
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      restaurantId: "4000",
+      restaurantId: "9000000",
       passedQuestions: [],
       questions: []
     };
@@ -21,7 +21,7 @@ class App extends Component {
 
   onSubmitHandler() {
     axios
-    .get(`http://localhost:3000/api/questions/${this.state.restaurantId}`)
+    .get(`${db}/api/questions/${this.state.restaurantId}`)
     .then(({ data }) => {
         this.setState({
           questions: data,

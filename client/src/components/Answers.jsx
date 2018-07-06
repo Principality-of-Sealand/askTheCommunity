@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import moment from "moment";
 import styled from "styled-components";
-
+const db = 'http://ec2-18-191-253-37.us-east-2.compute.amazonaws.com:3000'
 class Answers extends Component {
   constructor(props) {
     super(props);
@@ -27,7 +27,7 @@ class Answers extends Component {
 
   getPhoto() {
     axios
-      .get(`http://localhost:3000/api/getPhoto/${this.state.user_id}`)
+      .get(`${db}/api/getPhoto/${this.state.user_id}`)
       .then(({ data }) => {
         this.setState({
           imageUrl: data[0].imageUrl
@@ -40,7 +40,7 @@ class Answers extends Component {
 
   getAnswers() {
     axios
-      .get(`http://localhost:3000/api/getAnswers/${this.props.id}`)
+      .get(`${db}/api/getAnswers/${this.props.id}`)
       .then(({ data }) => {
         this.setState(
           {
