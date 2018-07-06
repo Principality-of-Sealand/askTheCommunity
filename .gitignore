@@ -5,3 +5,9 @@ aws-credentials.json
 pgdata
 questions.csv
 users.csv
+questions.zip
+users.zip
+newrelic.js
+newrelic_agent.log
+docker-compose.yml
+package-lock.json
