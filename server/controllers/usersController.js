@@ -1,12 +1,7 @@
-const { User } = require('../../database/schemas');
 const {pool} = require('../../database/schemas');
 
 const usersController = {
   'post': ((req, res) => {
-  //   User.create({
-  //     username: req.body.username,
-  //     imageUrl: req.body.imageUrl
-  // })
   pool.query('INSERT INTO users (username, imageUrl) VALUES ($1, $2)', [req.body.username, req.body.imageUrl])
   .then(data => {
       res.status(201).send(data);
