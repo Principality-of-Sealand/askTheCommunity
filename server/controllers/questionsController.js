@@ -8,12 +8,11 @@ const questionsController = {
   res.status(201).send(data);
 })
 .catch(err => {
-  console.log('Error inserting data into the database', err);
   res.status(400).send(err);
 })
 }),
 'get' : ((req, res) => {
-  const text = 'SELECT * FROM questions where restaurant_id = $1'
+  const text = 'SELECT * FROM questions where restaurant_id = $1 and parent_id is null'
   let values = [req.params.id]
   pool.query(text, values)
     .then(data => {
@@ -24,7 +23,9 @@ const questionsController = {
     });
 }),
 'getAnswers' : ((req, res) => {
-  pool.query('SELECT * FROM questions where parent_id = $1', [req.params.id])
+  const text = 'SELECT * FROM questions where parent_id = $1'
+  let values = [req.params.id]
+  pool.query(text, values)
     .then(data => {
       res.status(200).send(data.rows);
     })
@@ -33,9 +34,9 @@ const questionsController = {
     });
 }),
 'giveAnswer' : ((req, res) => {
-  pool.query('INSERT INTO questions(user_id, restaurant_id, text, parent_id, helpful, "createdAt", "updatedAt") VALUES ($1, $2, $3, $4, $5, $6, $7)',
-  [req.body.user_id, req.body.restaurant_id, req.body.text, req.body.parent_id || null, req.body.helpful || null, 'now', 'now']
-)
+  const text = 'INSERT INTO questions(user_id, restaurant_id, text, parent_id, helpful, "createdAt", "updatedAt") VALUES ($1, $2, $3, $4, $5, $6, $7)'
+  let values = [req.body.user_id, req.body.restaurant_id, req.body.text, req.body.parent_id || null, req.body.helpful || null, 'now', 'now']
+  poo.query(text, values)
   .then(data => {
     res.status(200).send(data)
   })
@@ -44,7 +45,9 @@ const questionsController = {
   })
 }),
 'deleteAnswer' : ((req, res) => {
-  pool.query('DELETE FROM questions WHERE parent_id = $1', [req.params.id])
+  const text = 'DELETE FROM questions WHERE parent_id = $1'
+  let values = [req.params.id]
+  pool.query(text, values)
   .then(data => {
     res.status(200).send(data)
   })
@@ -53,8 +56,9 @@ const questionsController = {
   })
 }),
 'put' : ((req, res) => {
-pool.query('UPDATE questions SET (user_id, text, parent_id, helpful, "createdAt", "updatedAt") = ($1, $2, $3, $4, $5, $6, ) WHERE restaurant_id = ($7)',
-[req.body.user_id, req.body.text, req.body.parent_id || null, req.body.helpful || null, 'now', 'now', req.body.restaurant_id])
+const text = 'UPDATE questions SET (user_id, text, parent_id, helpful, "createdAt", "updatedAt") = ($1, $2, $3, $4, $5, $6, ) WHERE restaurant_id = ($7)'
+let values = [req.body.user_id, req.body.text, req.body.parent_id || null, req.body.helpful || null, 'now', 'now', req.body.restaurant_id]
+pool.query(text, values)
   .then(data => {
     res.status(201).send(data)
   })
@@ -63,8 +67,9 @@ pool.query('UPDATE questions SET (user_id, text, parent_id, helpful, "createdAt"
   })
 }),
 'changeAnswer' : ((req, res) => {
-  pool.query('UPDATE questions SET (user_id, restaurant_id, text, parent_id, helpful, "createdAt", "updatedAt") = ($1, $2, $3, $4, $5, $6, $7) WHERE parent_id = ($4)',
-  [req.body.user_id, req.body.restaurant_id, req.body.text, req.body.parent_id, req.body.helpful || null, 'now', 'now'])
+  const text = 'UPDATE questions SET (user_id, restaurant_id, text, parent_id, helpful, "createdAt", "updatedAt") = ($1, $2, $3, $4, $5, $6, $7) WHERE parent_id = ($4)'
+  let values = [req.body.user_id, req.body.restaurant_id, req.body.text, req.body.parent_id, req.body.helpful || null, 'now', 'now']
+  pool.query(text, values)
     .then(data => {
       res.status(201).send(data)
     })
@@ -73,7 +78,9 @@ pool.query('UPDATE questions SET (user_id, text, parent_id, helpful, "createdAt"
     })
   }),
 'delete': ((req, res) => {
-  pool.query('DELETE FROM questions WHERE restaurant_id = $1', [req.params.id])
+  const text = 'DELETE FROM questions WHERE restaurant_id = $1'
+  let values = [req.params.id]
+  pool.query(text, values)
   .then(data => {
     res.status(200).send(data)
   })
