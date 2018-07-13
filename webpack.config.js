@@ -1,13 +1,13 @@
 const webpack = require('webpack');
 const path = require('path');
 
-// See: https://stackoverflow.com/questions/37788142/webpack-for-back-end
 const src = path.join(__dirname, 'client/src')
 const dist = path.join(__dirname, 'client/dist')
 const common = {
   context: src,
+  mode: 'production',
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
@@ -24,7 +24,7 @@ const client = {
   entry: './client.js',
   output: {
     path: dist,
-    filename: 'app.js'
+    filename: 'App.js'
   }
 };
 
@@ -33,7 +33,7 @@ const server = {
   target: 'node',
   output: {
     path: dist,
-    filename: 'app-server.js',
+    filename: 'App-server.js',
     libraryTarget: 'commonjs-module'
   }
 };
