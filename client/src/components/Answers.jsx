@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import axios from "axios";
 import moment from "moment";
 import styled from "styled-components";
-const db = 'http://ec2-18-191-253-37.us-east-2.compute.amazonaws.com:3000'
+const srv = 'http://ec2-18-216-222-192.us-east-2.compute.amazonaws.com:8080'
+
 class Answers extends Component {
   constructor(props) {
     super(props);
@@ -20,14 +21,14 @@ class Answers extends Component {
 
   componentDidMount() {
     this.getAnswers();
-    this.setState({
-      user_id: (Math.random() * 10000)
-    })
+    // this.setState({
+    //   user_id: this.props.id
+    // })
   }
 
   getPhoto() {
     axios
-      .get(`${db}/api/getPhoto/${this.state.user_id}`)
+      .get(`${srv}/api/getPhoto/${this.props.id}`)
       .then(({ data }) => {
         this.setState({
           imageUrl: data[0].imageUrl
@@ -40,7 +41,7 @@ class Answers extends Component {
 
   getAnswers() {
     axios
-      .get(`${db}/api/getAnswers/${this.props.id}`)
+      .get(`${srv}/api/getAnswers/${this.props.id}`)
       .then(({ data }) => {
         this.setState(
           {

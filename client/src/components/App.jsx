@@ -1,15 +1,14 @@
-//dependency imports
+
 import React, { Component } from "react";
 import axios from "axios";
 import styled from "styled-components";
-//local imports
 import Question from "./Question.jsx";
-const db = 'http://ec2-18-191-253-37.us-east-2.compute.amazonaws.com:3000'
+const srv = 'http://ec2-18-216-222-192.us-east-2.compute.amazonaws.com:8080'
 class App extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      restaurantId: "9000000",
+      restaurantId: props.id === undefined ? 120000 : props.id,
       passedQuestions: [],
       questions: []
     };
@@ -21,7 +20,7 @@ class App extends Component {
 
   onSubmitHandler() {
     axios
-    .get(`${db}/api/questions/${this.state.restaurantId}`)
+    .get(`${srv}/api/questions/${this.state.restaurantId}`)
     .then(({ data }) => {
         this.setState({
           questions: data,
@@ -67,14 +66,15 @@ class App extends Component {
     } else {
       return (
         <div>
-          {this.state.passedQuestions.map(question => {
+          {this.state.passedQuestions.map((question) => {
             if (question !== undefined) {
               return (
-                <div>
+                <div key={question.id}>
                   <Question
                     data={question.user_id}
                     message={question.text}
                     qid={question.id}
+                    
                   />
                 </div>
               );
@@ -100,8 +100,6 @@ class App extends Component {
 
     return (
       <div>
-        {/* Enter Restaurant Id: <input name="restaurantId" onChange={(e) => this.onChangeHandler(e)} />
-               <button onClick={() => this.onSubmitHandler()}>Get Questions</button> <br/> */}
         <Header>Ask The Community</Header>
         {this.conditionalRender()}
       </div>
