@@ -1,30 +1,9 @@
 version: '3'
 services:
   web:
-    image: yelp 
-    networks:
-      - webnet
+    image: jamisonl/yelp:latest 
     ports:
       - 3000:3000
-    environment:
-      DB_HOST: db 
-    depends_on: 
-      - db
     command:
-      bash -c "npm run build && npm start"
-  db:
-    image: postgres
-    volumes: 
-      - pgdata:/var/lib/postgresql/data
-    networks:
-      - webnet
-    ports:
-      - 5432:5432
-    environment:
-      POSTGRES_PASSWORD: 'pass'
-      POSTGRES_USER: postgres
-      POSTGRES_DB: practice
-volumes:
-  pgdata:
-networks:
-  webnet:
+      bash -c "npm run build && npm run server"
+
