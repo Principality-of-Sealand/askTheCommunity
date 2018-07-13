@@ -13,6 +13,10 @@ app.use(parser.urlencoded({ extended: true }));
 
 app.use(express.static(path.resolve(__dirname, "../client/dist"), {maxAge: "10d"}));
 app.use(cors());
+app.use((req, res, next) => {
+  res.setHeader('Cache-Control', 'public, max-age=86400')
+  next();
+})
 app.use('/api', Router);
 
 
